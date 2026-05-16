@@ -34,7 +34,7 @@ st.sidebar.caption("Deep Learning · News Content Recognition\nFinal Year Projec
 
 # ── Load selected page using absolute path ────────────────────────
 def load_page(filename):
-    path   = os.path.join(BASE_DIR, "pages", filename)
+    path   = os.path.join(BASE_DIR, filename)
     spec   = importlib.util.spec_from_file_location("page", path)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
