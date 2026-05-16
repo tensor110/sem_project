@@ -1,4 +1,6 @@
 import streamlit as st
+import importlib.util
+import os
 
 st.set_page_config(
     page_title="Deep Learning — News Content Recognition",
@@ -6,6 +8,9 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
+
+# Absolute path to the folder this file lives in — works on any machine / cloud
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # ── Sidebar navigation ────────────────────────────────────────────
 st.sidebar.image(
@@ -15,22 +20,21 @@ st.sidebar.title("Navigation")
 st.sidebar.markdown("---")
 
 PAGES = {
-    "🏠  Overview":              "pages/01_overview.py",
-    "🖼️  Image Models":          "pages/02_image_models.py",
-    "🔀  Image Fusion":          "pages/03_image_fusion.py",
-    "🎬  Video Model":           "pages/04_video_model.py",
-    "🔀  Video Trimodal Fusion": "pages/05_video_fusion.py",
-    "🔮  Live Demo":             "pages/06_live_demo.py",
+    "🏠  Overview"              : "01_overview.py",
+    "🖼️  Image Models"          : "02_image_models.py",
+    "🔀  Image Fusion"          : "03_image_fusion.py",
+    "🎬  Video Model"           : "04_video_model.py",
+    "🔀  Video Trimodal Fusion" : "05_video_fusion.py",
+    "🔮  Live Demo"             : "06_live_demo.py",
 }
 
 page = st.sidebar.radio("Go to", list(PAGES.keys()))
 st.sidebar.markdown("---")
 st.sidebar.caption("Deep Learning · News Content Recognition\nFinal Year Project · 2024")
 
-# ── Route to page ─────────────────────────────────────────────────
-import importlib.util, sys, os
-
-def load_page(path):
+# ── Load selected page using absolute path ────────────────────────
+def load_page(filename):
+    path   = os.path.join(BASE_DIR, "pages", filename)
     spec   = importlib.util.spec_from_file_location("page", path)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
