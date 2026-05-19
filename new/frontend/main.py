@@ -866,6 +866,6 @@ with tab_vid:
 # ─────────────────────────────────────────────────────────────────────────────
 st.markdown("""
 <div style="text-align:center; padding: 2rem 0 1rem; color:#3a4d6a; font-size:0.82rem; font-family:'Space Mono',monospace;">
-  Deep Learning · News Content Recognition &nbsp;|&nbsp; Final Year Project · 2024
+  Deep Learning · News Content Recognition &nbsp;|&nbsp; Final Year Project · May 2026
 </div>
 """, unsafe_allow_html=True)
