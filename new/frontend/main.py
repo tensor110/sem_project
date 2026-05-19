@@ -380,10 +380,34 @@ class TrimodalFusionModel(nn.Module):
 
 @st.cache_resource
 def _get_resnet_backbone():
-    """Frozen ResNet50 backbone (no head) — returns 2048-d features."""
-    r = models.resnet50(weights=None)
-    backbone = nn.Sequential(*list(r.children())[:-1])
+
+    NUM_CLASSES = 6
+
+    # Build SAME architecture as training
+    resnet_full = models.resnet50(weights=None)
+
+    resnet_full.fc = nn.Sequential(
+        nn.Linear(resnet_full.fc.in_features, 256),
+        nn.ReLU(),
+        nn.Dropout(0.4),
+        nn.Linear(256, NUM_CLASSES)
+    )
+
+    # Load trained ResNet50 checkpoint
+    resnet_ckpt_path = "ResNet50.pth"
+
+    state = torch.load(resnet_ckpt_path, map_location=device)
+
+    if isinstance(state, dict) and "model_state_dict" in state:
+        state = state["model_state_dict"]
+
+    resnet_full.load_state_dict(state)
+
+    # Remove classifier head
+    backbone = nn.Sequential(*list(resnet_full.children())[:-1])
+
     backbone.eval()
+
     return backbone
 
 
