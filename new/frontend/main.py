@@ -331,8 +331,16 @@ class CNN_LSTM(nn.Module):
         self.cnn  = nn.Sequential(*list(resnet.children())[:-1])
         self.lstm = nn.LSTM(2048, hidden_size, num_layers, batch_first=True, dropout=0.3)
         self.classifier = nn.Sequential(
-            nn.Linear(hidden_size, 256), nn.ReLU(), nn.Dropout(0.4),
-            nn.Linear(256, num_classes)
+
+            nn.Linear(hidden_size, 256),
+            nn.ReLU(),
+            nn.Dropout(0.4),
+
+            nn.Linear(256, 128),
+            nn.ReLU(),
+            nn.Dropout(0.3),
+
+            nn.Linear(128, num_classes)
         )
 
     def forward(self, x):
